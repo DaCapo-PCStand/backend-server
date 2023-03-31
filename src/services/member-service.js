@@ -62,3 +62,19 @@ exports.registMember = (memberInfo) => {
 
 
 }
+
+exports.checkDuplicated = (targetId)=>{
+    return new Promise(async (resolve, reject)=>{
+        const connection = getConnection();
+        
+        const results =await MemberRepository.selectMemberById(connection, targetId);
+        console.log('[member-service] select member by id result: ', results);
+
+        // id select 결과가 비워져 있을 경우 중복 X
+        if(results.length>0){
+            resolve(true)
+        } else {
+            resolve(false)
+        }
+    });
+}

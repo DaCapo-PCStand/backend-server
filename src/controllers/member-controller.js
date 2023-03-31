@@ -34,3 +34,34 @@ exports.registMember = async(req, res, next) => {
         results: results
     });
 }
+
+// ID 중복 확인 
+exports.checkDuplicated = async(req, res, next) => {
+    // body 데이터를 JS객체에 담음
+    const jsonBody = req.body;
+
+    console.log(jsonBody.targetId); 
+    // 정해진 포맷으로 데이터를 전달했는지 확인
+    if(jsonBody.targetId === undefined){
+        res.status(HttpStatus.UNPROCESSABLE_ENTITY).json({
+            status: HttpStatus.UNPROCESSABLE_ENTITY,
+            message: 'failed check duplicated : 데이터 포맷 불일치'
+        })
+    } else{
+        // 대상 ID를 targetId 객체에 담음
+        const targetId = jsonBody.targetId;
+
+        // 중복 확인 서비스 호출
+        const results = await MemberService.checkDuplicated(targetId);
+
+        // 중복 여부 결과 응답
+        res.status(HttpStatus.OK).json({
+            status: HttpStatus.OK,
+            message: "successfully check duplicated or not of targetId",
+            results: results
+        })
+    }
+    
+
+    
+}  
