@@ -77,3 +77,27 @@ exports.insertMemberInfo = (connection, memberInfo) => {
         )
     })
 }
+
+// 패스워드 조회 
+exports.selectMemberPasswordById = (connection, memberId)=>{
+    return new Promise((resolve, reject)=>{
+        connection.query(
+            memberQuery.selectMemberPasswordById(),
+            [memberId],
+            (err, results, fields)=>{
+                if(err){
+                    console.log('패스워드 조회 중 에러 발생');
+                    reject(err);
+                }
+
+                console.log('repo results: ', results);
+                // 조회 결과 반환
+                let password = {};
+                if(results.length === 1) {
+                    password = new MemberDTO(results[0]);
+                } 
+                resolve(password);
+            }
+        )
+    });
+}

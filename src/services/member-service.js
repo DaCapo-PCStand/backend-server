@@ -78,3 +78,18 @@ exports.checkDuplicated = (targetId)=>{
         }
     });
 }
+
+exports.selectMemberPasswordById = (memberId)=>{
+    return new Promise(async(resolve, reject)=>{
+        // 커넥션 객체 생성
+        const connection = getConnection();
+
+        // 패스워드 조회 repo 호출
+        const results = await MemberRepository.selectMemberPasswordById(connection, memberId);
+        console.log('[member-service] select password by id results: ', results);
+
+        // 조회 결과 반환
+        resolve(results);
+
+    })
+}

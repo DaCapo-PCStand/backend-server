@@ -38,3 +38,14 @@ exports.insertMemberInfo = () => {
              )
     `;
 }
+
+// ID로 패스워드 조회
+exports.selectMemberPasswordById = () => {
+   return `
+       SELECT
+               A.member_password
+         FROM  tbl_member A
+        WHERE  A.member_id = ?
+   `;
+ }
+ 

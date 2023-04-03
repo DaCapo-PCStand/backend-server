@@ -1,6 +1,6 @@
 const HttpStatus = require('http-status');
 const MemberService = require('../services/member-service.js');
-const PasswordBycript = require('../auth/password-bycript');
+const PasswordBcrypt = require('../auth/password-bcrypt.js');
 
 // 회원 정보 리스트 조회 요청을 서비스에 전달하고 반환된 결과물을 응답하는 async 메소드 export 
 exports.findAllMembers = async(req, res, next) => {
@@ -22,7 +22,7 @@ exports.registMember = async(req, res, next) => {
 
     const memberInfo = req.body;
     // 패스워드를 암호화하여 변수에 담음
-    memberInfo.memberPassword = await PasswordBycript.encrypt(memberInfo.memberPassword);
+    memberInfo.memberPassword = await PasswordBcrypt.encrypt(memberInfo.memberPassword);
 
     // req.body 값을 파라미터로 전달
     const results = await MemberService.registMember(req.body);
@@ -47,7 +47,7 @@ exports.checkDuplicated = async(req, res, next) => {
             status: HttpStatus.UNPROCESSABLE_ENTITY,
             message: 'failed check duplicated : 데이터 포맷 불일치'
         })
-    } else{
+    } else {
         // 대상 ID를 targetId 객체에 담음
         const targetId = jsonBody.targetId;
 
@@ -65,3 +65,38 @@ exports.checkDuplicated = async(req, res, next) => {
 
     
 }  
+
+
+
+// 로그인 API
+exports.login = async(req, res, next) => {
+    const query = req.query;
+    console.log('[member-controller] query : ', query);
+    
+    // 파라미터가 제대로 전달되었는지 확인
+    if(query.id=== "" || query.id === undefined || query.password === undefined){
+        res.status(HttpStatus.UNPROCESSABLE_ENTITY).json({
+            status: HttpStatus.UNPROCESSABLE_ENTITY,
+            message: '파라미터 입력 오류'
+        })
+    } else {
+       const results = await MemberService.selectMemberPasswordById(query.id);
+
+       const correct = (results.memberPassword !== undefined) ? await PasswordBcrypt.verify(query.password, results.memberPassword) : false;
+
+
+       if(!correct){
+            res.status(HttpStatus.OK).json({
+                status: HttpStatus.OK,
+                message: 'failed login',
+                results: '아이디 또는 비밀번호가 일치하지 않습니다'
+            });
+       } else {
+        res.status(HttpStatus.OK).json({
+            status: HttpStatus.OK,
+            message: 'successfully login',
+            results: '로그인 성공 - access 토큰 전달될 예정'
+        });
+       }
+    }
+}
