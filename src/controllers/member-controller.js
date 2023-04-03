@@ -1,6 +1,7 @@
 const HttpStatus = require('http-status');
 const MemberService = require('../services/member-service.js');
 const PasswordBcrypt = require('../auth/password-bcrypt.js');
+const JwtService = require('../auth/jwt-service.js');
 
 // 회원 정보 리스트 조회 요청을 서비스에 전달하고 반환된 결과물을 응답하는 async 메소드 export 
 exports.findAllMembers = async(req, res, next) => {
@@ -70,32 +71,34 @@ exports.checkDuplicated = async(req, res, next) => {
 
 // 로그인 API
 exports.login = async(req, res, next) => {
-    const query = req.query;
-    console.log('[member-controller] query : ', query);
+    const body = req.body;
+    console.log('[member-controller] body : ', body);
     
     // 파라미터가 제대로 전달되었는지 확인
-    if(query.id=== "" || query.id === undefined || query.password === undefined){
+    if(body.id=== "" || body.id === undefined || body.password === undefined){
         res.status(HttpStatus.UNPROCESSABLE_ENTITY).json({
             status: HttpStatus.UNPROCESSABLE_ENTITY,
             message: '파라미터 입력 오류'
         })
     } else {
-       const results = await MemberService.selectMemberPasswordById(query.id);
+       const results = await MemberService.selectMemberPasswordById(body.id);
 
-       const correct = (results.memberPassword !== undefined) ? await PasswordBcrypt.verify(query.password, results.memberPassword) : false;
+       const correct = (results.memberPassword !== undefined) ? await PasswordBcrypt.verify(body.password, results.memberPassword) : false;
 
 
        if(!correct){
-            res.status(HttpStatus.OK).json({
-                status: HttpStatus.OK,
+            res.status(HttpStatus.UNAUTHORIZED).json({
+                status: HttpStatus.UNAUTHORIZED,
                 message: 'failed login',
                 results: '아이디 또는 비밀번호가 일치하지 않습니다'
             });
        } else {
+        // access 토큰 발급
+        const token = JwtService.sign({id : body.id})
         res.status(HttpStatus.OK).json({
             status: HttpStatus.OK,
             message: 'successfully login',
-            results: '로그인 성공 - access 토큰 전달될 예정'
+            accessToken: token
         });
        }
     }
