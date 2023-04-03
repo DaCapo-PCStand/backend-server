@@ -8,5 +8,7 @@ router.get('/', memberController.findAllMembers);
 router.get('/duplicated', memberController.checkDuplicated);
 // post 요청을 받을 경우 memberController의 registMethod로 연결
 router.post('/', memberController.registMember);
+// '/login' 경로로 get 요청을 받을 경우 login 메소드로 연결
+router.get('/login', memberController.login);
 
 module.exports = router;
