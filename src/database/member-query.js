@@ -16,7 +16,6 @@ exports.selectMemberById = () => {
               A.member_id
            ,  A.member_name
            ,  A.signup_datetime
-           ,  A.member_password
         FROM  tbl_member A
        WHERE  A.member_id = ?
   `;
@@ -39,3 +38,14 @@ exports.insertMemberInfo = () => {
              )
     `;
 }
+
+// ID로 패스워드 조회
+exports.selectMemberPasswordById = () => {
+   return `
+       SELECT
+               A.member_password
+         FROM  tbl_member A
+        WHERE  A.member_id = ?
+   `;
+ }
+ 
