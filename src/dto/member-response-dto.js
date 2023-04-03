@@ -9,7 +9,7 @@ class MemberDTO {
         this.memberId = data.member_id;
         this.memberName = data.member_name;
         this.registDatetime = data.signup_datetime;
-        this.memberPassord = data.member_password;
+        this.memberPassword = data.member_password;
     }
 }
 
