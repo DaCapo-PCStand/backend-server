@@ -49,3 +49,12 @@ exports.selectMemberPasswordById = () => {
    `;
  }
  
+
+exports.updateMemberInfo = () => {
+   return  `
+      UPDATE
+              tbl_member A
+        SET   A.member_name = ?
+      WHERE   A.member_id = ?
+   `;
+}
