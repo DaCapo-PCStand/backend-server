@@ -101,3 +101,21 @@ exports.selectMemberPasswordById = (connection, memberId)=>{
         )
     });
 }
+
+exports.updateMemberInfo= (connection, info) => {
+    return new Promise((resolve, reject)=>{
+        connection.query(
+            memberQuery.updateMemberInfo(),
+            [ info.newName, info.memberId],
+            (err, results, fields)=>{
+                if(err) {
+                    console.log(err);
+                    reject(err);
+                }
+
+                console.log('[member repo] results :', results);
+                resolve(results);
+            }
+        )
+    })
+}

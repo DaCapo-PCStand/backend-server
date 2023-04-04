@@ -103,3 +103,19 @@ exports.login = async(req, res, next) => {
        }
     }
 }
+
+
+// 회원정보 수정 API
+exports.modifyMemberInfo = async (req, res, next)=>{
+    const { id } = req.payload;
+    const { newName } = req.body;
+    console.log('[memberController] paylaod-id: ', id);
+    
+    const results = await MemberService.modifyMemberInfo({memberId: id, newName: newName});
+    
+    res.status(HttpStatus.OK).json({
+        status: HttpStatus.OK,
+        message: 'successfully modify member info',
+        results: results
+    })
+}
