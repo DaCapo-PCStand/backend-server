@@ -93,3 +93,40 @@ exports.selectMemberPasswordById = (memberId)=>{
 
     })
 }
+
+
+// 회원 정보 수정 서비스 로직
+exports.modifyMemberInfo = (info) => {
+    return new Promise(async (resolve, reject) => {
+        // DB 연결 객체 생성 후 connection 변수에 할당
+        const connection = getConnection();
+
+        // 연결 객체가 트랜잭션 처리를 하도록 설정
+        connection.beginTransaction();
+
+        try {
+            // 회원 정보를  후 결과를 results 변수에 할당
+            await MemberRepository.updateMemberInfo(connection, info);
+            
+            // 회원 ID로 정보를 조회한 결과를 updatedMember 변수에 할당
+            const updatedMember = await MemberRepository.selectMemberById(connection, info.memberId);
+            
+            // 에러 없이 update 후 조회까지 마쳤다면 commit 한다
+            connection.commit();
+            console.log('[member-service] update commit');
+        
+            resolve(updatedMember); 
+
+
+        } catch(err) {
+            // insert 중 에러발생시 롤백
+            connection.rollback();
+            console.log('[member-service] update rollback');
+        } finally {
+            connection.end();
+            console.log('[member-service] connection closed');
+        }
+
+    }) 
+
+}
