@@ -18,6 +18,9 @@ app.use('/', indexRouter);
 const memberRouter =require('./src/routes/member-route.js');
 app.use('/member', authMiddleware,  memberRouter);
 
+// '/stand' 경로의 요청을 standRouter로 연결
+const registrationRouter = require('./src/routes/registration-route');
+app.use('/stand-registration', authMiddleware, registrationRouter);
 
 app.listen(8819, () => {
   console.log(`listening on port ${8819}`)
