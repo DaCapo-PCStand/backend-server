@@ -17,12 +17,12 @@ exports.selectStandByNumber = (connection, serialNumber) => {
             // 쿼리 결과를 콘솔로 확인
             console.log('selectStandByNumber repo results: ', results);
 
-            let stand = {};
-            if(results.length === 1){
-                stand = new StandDTO(results[0]);
+            let stands = [];
+            for(let i=0; i<results.length; i++) {
+                stands.push(new StandDTO(results[i]));
             }
             // 조회 결과 반환 
-            resolve(stand);
+            resolve(stands);
         })
     })
 }
