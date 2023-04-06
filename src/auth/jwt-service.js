@@ -9,7 +9,6 @@ const options = {
 
 // 토큰 발급
 exports.sign = (payload) => {
-    console.log(secretkey);
     // jwt 토큰 발급
     return jwt.sign(payload, secretkey, options);
 }

@@ -14,9 +14,9 @@ app.use(express.json());
 const indexRouter = require('./src/routes/index-route');
 app.use('/', indexRouter);
 
-// '/member' 경로의 요청을 memberRouter로 연결
-const memberRouter =require('./src/routes/member-route.js');
-app.use('/member', authMiddleware,  memberRouter);
+// '/user' 경로의 요청을 userRouter로 연결
+const userRouter =require('./src/routes/user-route.js');
+app.use('/user', authMiddleware,  userRouter);
 
 // '/stand' 경로의 요청을 standRouter로 연결
 const registrationRouter = require('./src/routes/registration-route');

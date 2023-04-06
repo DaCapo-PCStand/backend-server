@@ -1,12 +1,12 @@
 class RegistrationDTO {
     registrationId;
-    memberId;
+    userId;
     standId;
     serialNumber;
 
     constructor(data) {
         this.registrationId = data.registration_id;
-        this.memberId = data.member_id;
+        this.userId = data.user_id;
         this.standId = data.stand_id;
         this.serialNumber = data.serial_number;
     }

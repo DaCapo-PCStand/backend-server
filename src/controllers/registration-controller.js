@@ -3,12 +3,12 @@ const RegistrationService = require('../services/registration-service');
 const StandService = require('../services/stand-service');
 
 exports.registStand = async(req, res, next) => {
-    const { id } = req.payload;
+    const { userId } = req.payload;
     const { standSerialNumber } = req.body;
 
 
     
-    if(await RegistrationService.selectRegistrationByMember(id)) {
+    if(await RegistrationService.selectRegistrationByUser(userId)) {
         // 해당 회원이 이미 등록된 거치대가 있다면 
         res.status(HttpStatus.UNPROCESSABLE_ENTITY).json({
             status: HttpStatus.UNPROCESSABLE_ENTITY,
@@ -32,7 +32,7 @@ exports.registStand = async(req, res, next) => {
             });
         } else {
             // 등록 정보 저장 서비스 호출
-            const results = await RegistrationService.insertRegistration({memberId: id, standId: standId});
+            const results = await RegistrationService.insertRegistration({userId: userId, standId: standId});
             res.status(HttpStatus.OK).json({
                 status: HttpStatus.OK,
                 message: 'successfully regist stand',
