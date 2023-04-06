@@ -31,12 +31,12 @@ exports.insertRegistration = (info) => {
 }
 
 // 유저 id로 등록 정보 조회
-exports.selectRegistrationByMember = (memberId) => {
+exports.selectRegistrationByUser = (userId) => {
     return new Promise(async(resolve, reject)=>{
         const connection = getConnection();
 
         // 등록 정보 조회 repo 호출
-        const results = await RegistrationRepository.selectRegistrationByMember(connection, memberId);
+        const results = await RegistrationRepository.selectRegistrationByUser(connection, userId);
 
         // 커넥션 종료
         connection.end();

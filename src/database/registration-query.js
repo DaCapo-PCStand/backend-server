@@ -3,7 +3,7 @@ exports.insertRegistration = () => {
         INSERT
         INTO  tbl_registration
             (
-                member_id, 
+                user_id, 
                 stand_id
             )
         VALUE
@@ -17,7 +17,7 @@ exports.selectRegistrationById = () => {
     return  `
         SELECT
                 A.registration_id
-             ,  A.member_id
+             ,  A.user_id
              ,  B.stand_id
              ,  B.serial_number
           FROM  tbl_registration A
@@ -26,13 +26,13 @@ exports.selectRegistrationById = () => {
     `
 }
 
-exports.selectRegistrationByMember = () => {
+exports.selectRegistrationByUser = () => {
     return  `
         SELECT
                 A.registration_id
-             ,  A.member_id
+             ,  A.user_id
              ,  A.stand_id
           FROM  tbl_registration A
-         WHERE  A.member_id = ?
+         WHERE  A.user_id = ?
     `
 }

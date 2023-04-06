@@ -6,7 +6,7 @@ exports.insertRegistration = (connection, info) => {
     return new Promise((resolve, reject) => {
         connection.query(
             registrationQuery.insertRegistration(), 
-            [info.memberId, info.standId],
+            [info.userId, info.standId],
             (err, results, fields) => {
             
             // 에러 발생시 로그 출력 후 reject
@@ -51,18 +51,18 @@ exports.selectRegistrationById = (connection, standId) => {
 } 
 
 // 특정 회원의 거치대 등록 정보 조회
-exports.selectRegistrationByMember = (connection, memberId) => {
+exports.selectRegistrationByUser = (connection, userId) => {
     return new Promise((resolve, reject)=>{
         connection.query(
-            registrationQuery.selectRegistrationByMember(),
-            [memberId],
+            registrationQuery.selectRegistrationByUser(),
+            [userId],
             (err, results, fields)=>{
                 if(err) {
-                    console.log("selectRegistrationByMember repo err");
+                    console.log("selectRegistrationByUser repo err");
                     reject(err);
                 }
 
-                console.log("selectRegistrationByMember repo results:", results);
+                console.log("selectRegistrationByUser repo results:", results);
                 let registration;
                 if(results.length >= 1) {
                     registration = new RegistrationDTO(results[0]);
