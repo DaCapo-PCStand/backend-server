@@ -25,11 +25,35 @@ exports.insertRegistration = (connection, info) => {
 }
 
 
-// 거치대 id로 등록 정보 조회
-exports.selectRegistrationById = (connection, standId) => {
+// 등록 id로 등록 정보 조회
+exports.selectRegistrationById = (connection, registrationId) => {
     return new Promise((resolve, reject)=>{
        connection.query(
         registrationQuery.selectRegistrationById(),
+        [registrationId],
+        (err, results, fields) => {
+            if(err) {
+                console.log('registration repo err');
+                reject(err);
+            }
+
+            console.log('selectRegistrationById repo results :', results);
+
+            let registration = {};
+            if(results.length === 1) {
+                registration = new RegistrationDTO(results[0]);
+            }
+
+            resolve(registration);
+        }
+       ) 
+    });
+} 
+
+exports.selectRegistrationByStand = (connection, standId) => {
+    return new Promise((resolve, reject)=>{
+       connection.query(
+        registrationQuery.selectRegistrationByStand(),
         [standId],
         (err, results, fields) => {
             if(err) {

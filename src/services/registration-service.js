@@ -44,3 +44,18 @@ exports.selectRegistrationByUser = (userId) => {
         resolve(results);
     })
 }
+
+// 거치대 ID로 등록 정보 조회
+exports.selectRegistrationByStand = (standId) => {
+    return new Promise(async(resolve, reject)=>{
+        const connection = getConnection();
+
+        // 등록 정보 조회 repo 호출
+        const results = await RegistrationRepository.selectRegistrationByStand(connection, standId);
+
+        // 커넥션 종료
+        connection.end();
+
+        resolve(results);
+    })
+}

@@ -30,6 +30,11 @@ exports.registStand = async(req, res, next) => {
                 status: HttpStatus.UNPROCESSABLE_ENTITY,
                 message: '존재하지 않는 거치대 입니다'
             });
+        } else if(await RegistrationService.selectRegistrationByStand(standId)) {
+            res.status(HttpStatus.UNPROCESSABLE_ENTITY).json({
+                status: HttpStatus.UNPROCESSABLE_ENTITY,
+                message: '이미 등록된 거치대 입니다'
+            });
         } else {
             // 등록 정보 저장 서비스 호출
             const results = await RegistrationService.insertRegistration({userId: userId, standId: standId});
