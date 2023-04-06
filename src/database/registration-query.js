@@ -36,3 +36,14 @@ exports.selectRegistrationByUser = () => {
          WHERE  A.user_id = ?
     `
 }
+
+exports.selectRegistrationByStand = () => {
+    return  `
+        SELECT
+                A.registration_id
+             ,  A.user_id
+             ,  A.stand_id
+          FROM  tbl_registration A
+         WHERE  A.stand_id = ?
+    `
+}
