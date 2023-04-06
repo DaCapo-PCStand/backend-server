@@ -9,7 +9,7 @@ exports.registerStand = async(req, res, next) => {
 
 
     
-    if(await RegistrationService.findRegistrationByUser(userId)) {
+    if((await RegistrationService.findRegistrationByUser(userId)).length) {
         // 해당 회원이 이미 등록된 거치대가 있다면 
         res.status(HttpStatus.UNPROCESSABLE_ENTITY).json({
             status: HttpStatus.UNPROCESSABLE_ENTITY,
@@ -24,14 +24,14 @@ exports.registerStand = async(req, res, next) => {
 
     } else {
         // DB에 등록된 거치대의 시리얼 번호인지 확인
-        const { standId } = await StandService.findStandByNumber(standSerialNumber);
+        const {standId} = (await StandService.findStandByNumber(standSerialNumber))[0];
         console.log('[registrationController] find stand : ', standId);
         if(!standId) {
             res.status(HttpStatus.UNPROCESSABLE_ENTITY).json({
                 status: HttpStatus.UNPROCESSABLE_ENTITY,
                 message: '존재하지 않는 거치대 입니다'
             });
-        } else if(await RegistrationService.findRegistrationByStand(standId)) {
+        } else if((await RegistrationService.findRegistrationByStand(standId)).length) {
             res.status(HttpStatus.UNPROCESSABLE_ENTITY).json({
                 status: HttpStatus.UNPROCESSABLE_ENTITY,
                 message: '이미 등록된 거치대 입니다'
@@ -59,7 +59,7 @@ exports.unregisterStand = async(req, res, next) => {
     try {
         const results = await RegistrationService.unregisterStand(registrationId);
 
-        if(results.affectedRows === 1) {
+        if(results) {
             res.status(HttpStatus.OK).json({
                 status: HttpStatus.OK,
                 message: 'successfully unregister stand'
@@ -78,4 +78,18 @@ exports.unregisterStand = async(req, res, next) => {
     }
 
 
+}
+
+// 유저 ID로 거치대 등록 정보 조회 API
+exports.findRegistrationByUser =  async (req, res, next) => {
+    const { userId } = req.payload;
+    
+    const results = await RegistrationService.findRegistrationByUser(userId);
+    console.log('[registration-controller] findRegistrationByUser results : ', results);
+
+    res.status(HttpStatus.OK).json({
+        status: HttpStatus.OK,
+        message: '조회 성공',
+        results: results
+    });
 }
