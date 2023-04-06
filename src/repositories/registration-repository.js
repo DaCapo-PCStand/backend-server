@@ -39,17 +39,19 @@ exports.selectRegistrationById = (connection, registrationId) => {
 
             console.log('selectRegistrationById repo results :', results);
 
-            let registration = {};
-            if(results.length === 1) {
-                registration = new RegistrationDTO(results[0]);
+            let registrations = [];
+
+            for(var i=0; i<results.length; i++){
+                registrations.push(new RegistrationDTO(results[i]));
             }
 
-            resolve(registration);
+            resolve(registrations);
         }
        ) 
     });
 } 
 
+// 거치대ID로 등록 정보 조회
 exports.selectRegistrationByStand = (connection, standId) => {
     return new Promise((resolve, reject)=>{
        connection.query(
@@ -61,14 +63,15 @@ exports.selectRegistrationByStand = (connection, standId) => {
                 reject(err);
             }
 
-            console.log('selectRegistrationById repo results :', results);
+            console.log('selectRegistrationByStand repo results :', results);
 
-            let registration = {};
-            if(results.length === 1) {
-                registration = new RegistrationDTO(results[0]);
+            let registrations = [];
+
+            for(let i=0; i<results.length; i++){
+                registrations.push(new RegistrationDTO(results[i]));
             }
 
-            resolve(registration);
+            resolve(registrations);
         }
        ) 
     });
@@ -87,16 +90,19 @@ exports.selectRegistrationByUser = (connection, userId) => {
                 }
 
                 console.log("selectRegistrationByUser repo results:", results);
-                let registration;
-                if(results.length >= 1) {
-                    registration = new RegistrationDTO(results[0]);
+                
+                let registrations = [];
+
+                for(var i=0; i<results.length; i++){
+                    registrations.push(new RegistrationDTO(results[i]));
                 }
-                resolve(registration);
+                resolve(registrations);
             }
         )
     });
 }
 
+// 등록 정보 제거
 exports.deleteRegistration = (connection, registrationId) => {
     return new Promise((resolve, reject) => {
         connection.query(

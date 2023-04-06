@@ -37,10 +37,10 @@ exports.findRegistrationByUser = (userId) => {
 
         // 등록 정보 조회 repo 호출
         const results = await RegistrationRepository.selectRegistrationByUser(connection, userId);
+        console.log('[registration-service] results:', results);
 
         // 커넥션 종료
         connection.end();
-
         resolve(results);
     })
 }
@@ -71,7 +71,7 @@ exports.unregisterStand = (registrationId) => {
 
             connection.commit();
             console.log("[registration-serivce] delete commit");
-            resolve(results);
+            resolve((results.affectedRows < 1) ? false : true);
         } catch (err) {
             connection.rollback();
             console.log("[registration-service] delete rollback");

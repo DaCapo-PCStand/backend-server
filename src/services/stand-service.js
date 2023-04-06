@@ -10,7 +10,7 @@ exports.findStandByNumber = (serialNumber) => {
 
         // 조회 repo 호출
         const results = await StandRepository.selectStandByNumber(connection, serialNumber);
-
+        console.log('[stand-serivce] findStandByNumber : ', results);
         connection.end();
         
         // 조회 결과 반환
