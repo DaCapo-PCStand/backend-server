@@ -2,7 +2,7 @@ const StandRepository = require('../repositories/stand-repository');
 const getConnection = require('../database/connection');
 
 // 시리얼 번호로 stand 정보 조회
-exports.selectStandByNumber = (serialNumber) => {
+exports.findStandByNumber = (serialNumber) => {
     return new Promise(async(resolve, reject) => {
         
         // connection 생성

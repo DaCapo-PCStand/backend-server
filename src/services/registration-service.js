@@ -1,7 +1,7 @@
 const RegistrationRepository = require('../repositories/registration-repository');
 const getConnection = require('../database/connection');
 
-exports.insertRegistration = (info) => {
+exports.registerStand = (info) => {
     return new Promise(async(resolve, reject) => {
         
         // connection 생성
@@ -31,7 +31,7 @@ exports.insertRegistration = (info) => {
 }
 
 // 유저 id로 등록 정보 조회
-exports.selectRegistrationByUser = (userId) => {
+exports.findRegistrationByUser = (userId) => {
     return new Promise(async(resolve, reject)=>{
         const connection = getConnection();
 
@@ -46,7 +46,7 @@ exports.selectRegistrationByUser = (userId) => {
 }
 
 // 거치대 ID로 등록 정보 조회
-exports.selectRegistrationByStand = (standId) => {
+exports.findRegistrationByStand = (standId) => {
     return new Promise(async(resolve, reject)=>{
         const connection = getConnection();
 
@@ -57,5 +57,29 @@ exports.selectRegistrationByStand = (standId) => {
         connection.end();
 
         resolve(results);
+    })
+}
+
+exports.unregisterStand = (registrationId) => {
+    return new Promise(async(resolve, reject) => {
+        const connection = getConnection();
+        
+        connection.beginTransaction();
+        try {
+            // 등록 정보 제거 repo 호출
+            const results = await RegistrationRepository.deleteRegistration(connection, registrationId);
+
+            connection.commit();
+            console.log("[registration-serivce] delete commit");
+            resolve(results);
+        } catch (err) {
+            connection.rollback();
+            console.log("[registration-service] delete rollback");
+            reject(err);
+        } finally {
+            console.log("[registration-service] connection closed");
+            connection.end();
+        }
+
     })
 }

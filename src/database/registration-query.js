@@ -47,3 +47,11 @@ exports.selectRegistrationByStand = () => {
          WHERE  A.stand_id = ?
     `
 }
+
+exports.deleteRegistration = () => {
+    return `
+        DELETE
+          FROM  tbl_registration
+         WHERE  registration_id = ?
+    `;
+}

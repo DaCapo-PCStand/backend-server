@@ -96,3 +96,22 @@ exports.selectRegistrationByUser = (connection, userId) => {
         )
     });
 }
+
+exports.deleteRegistration = (connection, registrationId) => {
+    return new Promise((resolve, reject) => {
+        connection.query(
+            registrationQuery.deleteRegistration(),
+            [registrationId],
+            (err, results, fields) => {
+                if(err) {
+                    console.log('registration repo err');
+                    reject(err);
+                }
+
+                console.log('registration repo results:', results);
+
+                resolve(results);
+            }
+        );
+    })
+}
