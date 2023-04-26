@@ -1,4 +1,5 @@
 //  DB 연결 객체 관련 모듈 불러오기
+const e = require('express');
 const getConnection = require('../database/connection');
 // user 레파지토리 모듈 불러오기
 const UserRepository = require('../repositories/user-repository.js');
@@ -51,8 +52,9 @@ exports.checkDuplicated = (targetId)=>{
         const results =await UserRepository.selectUserById(connection, targetId);
         console.log('[user-service] selectUserById result: ', results);
 
-        
-        resolve(results);
+    
+        resolve(results.length ? true : false);
+       
     });
 }
 
@@ -63,7 +65,7 @@ exports.selectUserById = (userId)=>{
 
         // 패스워드 조회 repo 호출
         const results = await UserRepository.selectUserById(connection, userId);
-        console.log('[user-service] select password by id results: ', results);
+        console.log('[user-service] select user by id results: ', results);
 
         // 조회 결과 반환
         resolve(results);

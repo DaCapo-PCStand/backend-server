@@ -20,12 +20,13 @@ exports.selectUserById = (connection, userId) => {
             // 쿼리 결과를 콘솔로 확인
             console.log('repo results: ', results);
 
-            let user = {};
-            if(results.length === 1){
-                user = new UserDTO(results[0]);
+            let users = [];
+            for(let i=0; i<results.length; i++){
+                users.push(new UserDTO(results[i]));
             }
+        
             // 조회 결과 반환 
-            resolve(user);
+            resolve(users);
         })
     })
 }
