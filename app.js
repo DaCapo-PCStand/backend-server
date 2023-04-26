@@ -25,6 +25,10 @@ app.use('/api/user', authMiddleware,  userRouter);
 const registrationRouter = require('./src/routes/registration-route');
 app.use('/api/stand-registration', authMiddleware, registrationRouter);
 
+// '/posture' 경로 요청 라우터 설정
+const postureRouter = require('./src/routes/posture-route');
+app.use('/api/posture', authMiddleware, postureRouter);
+
 app.listen(8819, () => {
   console.log(`listening on port ${8819}`)
 })
