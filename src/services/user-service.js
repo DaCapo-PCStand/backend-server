@@ -1,5 +1,4 @@
 //  DB 연결 객체 관련 모듈 불러오기
-const e = require('express');
 const getConnection = require('../database/connection');
 // user 레파지토리 모듈 불러오기
 const UserRepository = require('../repositories/user-repository.js');

@@ -1,16 +1,18 @@
 const JwtService = require('../auth/jwt-service');
 const HttpStatus =  require('http-status');
 exports.authMiddleware = async (req, res, next) => {
-    console.log(req.header('Authorization'));
+    console.log(typeof req.header('Authorization'));
   
     // 헤더로부터 토큰 읽기 
     const accessToken = req.header('Authorization').split('Bearer ')[1];
 
+    console.log(accessToken);
     // 토큰 유무 확인
     if(!accessToken){
         res.status(HttpStatus.UNAUTHORIZED).json({
             status : HttpStatus.UNAUTHORIZED,
-            message : '토큰이 없습니다'
+            message : '토큰이 없습니다',
+            results: {isAuth: false, isExp : false}
         }) 
     } 
 
@@ -25,8 +27,9 @@ exports.authMiddleware = async (req, res, next) => {
         console.log()
         res.status(HttpStatus.UNAUTHORIZED).json({
             status : HttpStatus.UNAUTHORIZED,
-            message: err.message
-        }).redirect('/login');
+            message: err.message,
+            results: {isAuth: false, isExp : true}
+        })
     }
 
 } 
