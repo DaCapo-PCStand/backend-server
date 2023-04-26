@@ -17,8 +17,6 @@ exports.selectRegistrationById = () => {
     return  `
         SELECT
                 A.registration_id
-             ,  A.user_id
-             ,  B.stand_id
              ,  B.serial_number
           FROM  tbl_registration A
           JOIN  tbl_stand B ON( A.stand_id = B.stand_id )
@@ -30,9 +28,9 @@ exports.selectRegistrationByUser = () => {
     return  `
         SELECT
                 A.registration_id
-             ,  A.user_id
-             ,  A.stand_id
+             ,  B.serial_number
           FROM  tbl_registration A
+          JOIN  tbl_stand B ON( A.stand_id = B.stand_id )
          WHERE  A.user_id = ?
     `
 }
