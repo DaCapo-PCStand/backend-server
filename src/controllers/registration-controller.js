@@ -24,25 +24,25 @@ exports.registerStand = async(req, res, next) => {
 
     } else {
         // DB에 등록된 거치대의 시리얼 번호인지 확인
-        const {standId} = (await StandService.findStandByNumber(standSerialNumber))[0];
-        console.log('[registrationController] find stand : ', standId);
-        if(!standId) {
+        const findResults = await StandService.findStandByNumber(standSerialNumber);
+        // console.log('[registrationController] find stand : ', standId);
+        if(!findResults.length) {
             res.status(HttpStatus.UNPROCESSABLE_ENTITY).json({
                 status: HttpStatus.UNPROCESSABLE_ENTITY,
                 message: '존재하지 않는 거치대 입니다'
             });
-        } else if((await RegistrationService.findRegistrationByStand(standId)).length) {
+        } else if((await RegistrationService.findRegistrationByStand(findResults[0].standId)).length) {
             res.status(HttpStatus.UNPROCESSABLE_ENTITY).json({
                 status: HttpStatus.UNPROCESSABLE_ENTITY,
                 message: '이미 등록된 거치대 입니다'
             });
         } else {
             // 등록 정보 저장 서비스 호출
-            const results = await RegistrationService.registerStand({userId: userId, standId: standId});
+            const results = await RegistrationService.registerStand({userId: userId, standId: findResults[0].standId});
             res.status(HttpStatus.OK).json({
                 status: HttpStatus.OK,
                 message: 'successfully regist stand',
-                results: results
+                results: results[0]
             });
         }
     }
@@ -86,7 +86,9 @@ exports.findRegistrationByUser =  async (req, res, next) => {
     
     const results = await RegistrationService.findRegistrationByUser(userId);
     console.log('[registration-controller] findRegistrationByUser results : ', results);
-
+    // if(results.length) {
+    //     delete results[0].userId
+    // }
     res.status(HttpStatus.OK).json({
         status: HttpStatus.OK,
         message: '조회 성공',
