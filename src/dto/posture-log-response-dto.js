@@ -11,7 +11,7 @@ class PostureLogDTO{
         this.logDate = data.log_date;
         this.sittingTime = data.sitting_time;
         this.straightTime = data.straight_time;
-        this.badTime = data.straight_time;
+        this.badTime = data.bad_time;
     }
 
 }
